@@ -33,25 +33,25 @@ You have two main ways to use Gemini AI:
 - With a Key Binding (if set up): Type your command or question directly in the terminal, then press Ctrl + g. This will send your input to the Gemini API, and the response will appear on the next line.
 - Directly from the Command Line: Simply run gemini followed by your question or desired command:
 ```bash
-~ gemini how can \n be changed to literal newline using sed
-sed 's/n/\\n/g'
+~ gemini list use the container names of all containers
+docker ps --format '{{.Names}}'
 
-~ gemini create a logstash pipeline for syslog input and stdout output
-input
- {
-	syslog {
-		port => 514
-	}
+~ gemini create a logstash pipeline for syslog input and add a tag for environment to be PRODUCTION and output to stdout
+input {
+  syslog {
+    port => 514
+  }
 }
 
-
 filter {
+  mutate {
+    add_field => { "environment" => "PRODUCTION" }
+  }
 }
 
 output {
-	stdout {
-		codec => ruby
-debug
-	}
+  stdout {
+    codec => rubydebug
+  }
 }
 ```
