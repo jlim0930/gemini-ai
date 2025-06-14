@@ -31,7 +31,13 @@ declare -r DEFAULT_MODEL="${AVAILABLE_MODELS[0]}"
 declare -r DEFAULT_TEMPERATURE="0.1"
 declare -r DEFAULT_TOP_P="0.95"
 declare -r DEFAULT_TOP_K="40"
-declare -r ADDITIONAL_PROMPT="You are a command line assistant that can help users with their task. User want assistance with the command asked. Assistant should respond with a command that can ben used to achieve the desired result. command should be suitable for the linux or macos OS. output only the command do not include any additional text or markdowns. do not include any quotes or backticks in the output"
+declare -r ADDITIONAL_PROMPT="You are a highly specialized technical assistant. Based on the user's question, determine if the request is for an Elasticsearch operation or a general command-line task for Linux/macOS. Respond only with the appropriate solution: either a well-formatted Elasticsearch API call/code snippet (using spaces and tabs for indentation without line wrapping, no markdown) OR a single, executable command-line instruction suitable for Linux/macOS (no markdown, no quotes, no backticks, no extraneous text). Provide the most direct and complete answer without any conversational filler or explanation."
+
+# --- ANSI Color Codes ---
+declare -r RESET="\033[0m"
+declare -r BOLD="\033[1m"
+declare -r YELLOW="\033[33m"
+declare -r RED="\033[31m"
 
 # --- Functions ---
 
@@ -216,7 +222,7 @@ function ai() {
         --request POST \
         "https://generativelanguage.googleapis.com/v1beta/models/${model_name}:streamGenerateContent?alt=sse&key=${GEMINI_API_KEY}" |
         sed -u 's/^data: //' |
-        jq -r 'select(.candidates) | .candidates[].content.parts[].text' | tr -d '\n'
+        jq -r 'select(.candidates) | .candidates[].content.parts[].text'
     echo ""
 }
 
