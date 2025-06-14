@@ -1,6 +1,6 @@
 # Gemini AI: Your Terminal Command Assistant
 
-Gemini AI is a command-line tool that lets you quickly get answers and commands from the Gemini API right in your terminal. It's designed to be a fast, efficient helper for your daily tasks.
+Gemini AI is a command-line tool that lets you quickly get answers and commands from the Gemini API right in your terminal. It's designed to be a fast, efficient helper for your daily tasks.  Gemini AI is geared toward linux/macOS systems administrator or elasticsearch related topics and outputs.
 
 ## Installation
 To get Gemini AI up and running, you just need to download the script and make it executable:
