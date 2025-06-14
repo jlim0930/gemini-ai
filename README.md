@@ -26,5 +26,6 @@ You have two main ways to use Gemini AI:
 - With a Key Binding (if set up): Type your command or question directly in the terminal, then press Ctrl + g. This will send your input to the Gemini API, and the response will appear on the next line.
 - Directly from the Command Line: Simply run gemini followed by your question or desired command:
 ```bash
-gemini How do I list all running Docker containers?
+~ gemini how can \n be changed to literal newline using sed
+sed 's/n/\\n/g'
 ```
