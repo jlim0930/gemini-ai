@@ -36,6 +36,22 @@ You have two main ways to use Gemini AI:
 ~ gemini how can \n be changed to literal newline using sed
 sed 's/n/\\n/g'
 
-~ gemini using jq how to count the number of objects in an array
-jq '. | length'
+~ gemini create a logstash pipeline for syslog input and stdout output
+input
+ {
+	syslog {
+		port => 514
+	}
+}
+
+
+filter {
+}
+
+output {
+	stdout {
+		codec => ruby
+debug
+	}
+}
 ```
