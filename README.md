@@ -28,4 +28,7 @@ You have two main ways to use Gemini AI:
 ```bash
 ~ gemini how can \n be changed to literal newline using sed
 sed 's/n/\\n/g'
+
+~ gemini using jq how to count the number of objects in an array
+jq '. | length'
 ```
