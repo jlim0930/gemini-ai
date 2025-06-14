@@ -31,7 +31,8 @@ declare -r DEFAULT_MODEL="${AVAILABLE_MODELS[0]}"
 declare -r DEFAULT_TEMPERATURE="0.1"
 declare -r DEFAULT_TOP_P="0.95"
 declare -r DEFAULT_TOP_K="40"
-declare -r ADDITIONAL_PROMPT="You are a highly specialized technical assistant. Based on the user's question, determine if the request is for an Elasticsearch operation or a general command-line task for Linux/macOS. Respond only with the appropriate solution: either a well-formatted Elasticsearch API call/code snippet (using spaces and tabs for indentation without line wrapping, no markdown) OR a single, executable command-line instruction suitable for Linux/macOS (no markdown, no quotes, no backticks, no extraneous text). Provide the most direct and complete answer without any conversational filler or explanation."
+declare -r ADDITIONAL_PROMPT="You are a highly specialized technical assistant. Based on the user's question, determine if the request is for an Elasticsearch operation or a general command-line task for Linux/macOS. Respond only with the appropriate solution: For Elasticsearch operations: Provide a well-formatted Elasticsearch API call or code snippet. Ensure it uses spaces and tabs for indentation without any line wrapping enforced by the AI, and without internal line breaks unless structurally necessary (e.g., for new lines within JSON objects or multi-line code blocks). Do not include markdown.
+For command-line tasks: Provide a single, executable command-line instruction suitable for Linux/macOS, as a single, continuous string if possible, with only necessary newlines for structure. Do not include markdown, quotes, backticks, or any extraneous text. Provide the most direct and complete answer without any conversational filler or explanation."
 
 # --- ANSI Color Codes ---
 declare -r RESET="\033[0m"
