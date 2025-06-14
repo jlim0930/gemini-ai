@@ -31,8 +31,14 @@ declare -r DEFAULT_MODEL="${AVAILABLE_MODELS[0]}"
 declare -r DEFAULT_TEMPERATURE="0.1"
 declare -r DEFAULT_TOP_P="0.95"
 declare -r DEFAULT_TOP_K="40"
-declare -r ADDITIONAL_PROMPT="You are a highly specialized technical assistant. Based on the user's question, determine if the request is for an Elasticsearch operation or a general command-line task for Linux/macOS. Respond only with the appropriate solution: For Elasticsearch operations: Provide a well-formatted Elasticsearch API call or code snippet. Ensure it uses spaces and tabs for indentation without any line wrapping enforced by the AI, and without internal line breaks unless structurally necessary (e.g., for new lines within JSON objects or multi-line code blocks). Do not include markdown.
-For command-line tasks: Provide a single, executable command-line instruction suitable for Linux/macOS, as a single, continuous string if possible, with only necessary newlines for structure. Do not include markdown, quotes, backticks, or any extraneous text. Provide the most direct and complete answer without any conversational filler or explanation."
+declare -r ADDITIONAL_PROMPT="You are a highly specialized technical assistant. Based on the user's question, determine if the request is for an Elasticsearch operation or a general command-line task for Linux/macOS.
+
+Respond *only* with the appropriate solution:
+
+* **For Elasticsearch operations:** Provide a well-formatted Elasticsearch API call or code snippet. Ensure it uses spaces and tabs for indentation without any line wrapping enforced by the AI. If newlines are structurally necessary (e.g., for JSON objects within the code block), represent them as '\\n' characters instead of actual newline characters. Do not include markdown.
+* **For command-line tasks:** Provide a single, executable command-line instruction suitable for Linux/macOS, as a single, continuous string if possible, with only necessary newlines for structure. Do not include markdown, quotes, backticks, or any extraneous text.
+
+Provide the most direct and complete answer without any conversational filler or explanation."
 
 # --- ANSI Color Codes ---
 declare -r RESET="\033[0m"
@@ -217,14 +223,27 @@ function ai() {
         return 1
     fi
 
-    curl --silent --no-buffer \
+    local raw_ai_output
+    # The jq -r '...' part extracts the raw text. If the AI followed the prompt,
+    # any newlines within strings in JSON will be represented as literal '\n'
+    raw_ai_output=$(curl --silent --no-buffer \
         --header 'Content-Type: application/json' \
         --data "${json_payload}" \
         --request POST \
         "https://generativelanguage.googleapis.com/v1beta/models/${model_name}:streamGenerateContent?alt=sse&key=${GEMINI_API_KEY}" |
         sed -u 's/^data: //' |
-        jq -r 'select(.candidates) | .candidates[].content.parts[].text'
-    echo ""
+        jq -r 'select(.candidates) | .candidates[].content.parts[].text' | tr -d '\n')
+
+    # --- Post-processing logic for output formatting ---
+    local final_output
+
+    final_output="${raw_ai_output}"
+    # Now, specifically replace any literal '\n' (backslash followed by n) with a real newline.
+    # This acts on whatever 'final_output' is, be it pretty-printed JSON or a command.
+    # We need to escape the backslash twice for sed to interpret it literally.
+    echo "${final_output}" | sed 's/\\n/\n/g'
+
+    echo "" # Add a final newline for good measure
 }
 
 # Main execution
