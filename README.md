@@ -12,6 +12,13 @@ sudo curl -L https://raw.githubusercontent.com/jlim0930/gemini-ai/main/gemini.sh
 sudo chmod +x /usr/local/bin/gemini
 ```
 
+You will need to set your GEMINI_API_KEY in your environment or set it in your ~/.env
+```
+GEMINI_API_KEY="xyz"
+```
+
+apikey can be collected from https://ai.google.dev/gemini-api/docs/api-key
+
 ## Setup Key Binding (optional)
 For even quicker access, you can bind Gemini AI to a keyboard shortcut in your Zsh shell. This allows you to instantly send your current command or question to the Gemini API.
 
